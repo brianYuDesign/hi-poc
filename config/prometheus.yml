@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'balance-api'
+    static_configs:
+      - targets: ['host.docker.internal:9091']
+        labels:
+          service: 'balance-api'
+
+  - job_name: 'balance-consumer'
+    static_configs:
+      - targets: ['host.docker.internal:9092']
+        labels:
+          service: 'balance-consumer'
+
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['mysql-exporter:9104']
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']

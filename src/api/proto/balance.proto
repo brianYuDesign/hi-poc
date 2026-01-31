@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package balance;
+
+// 余额服务
+service BalanceService {
+  // 查询余额
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+  
+  // 变更余额（异步）
+  rpc ChangeBalance(ChangeBalanceRequest) returns (ChangeBalanceResponse);
+  
+  // 健康检查
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+// 查询余额请求
+message GetBalanceRequest {
+  int64 account_id = 1;
+  string currency_code = 2;
+}
+
+// 查询余额响应
+message GetBalanceResponse {
+  bool success = 1;
+  BalanceInfo balance = 2;
+  string error_message = 3;
+}
+
+// 余额信息
+message BalanceInfo {
+  int64 account_id = 1;
+  string currency_code = 2;
+  string available = 3;  // Decimal as string
+  string frozen = 4;     // Decimal as string
+  int64 version = 5;
+  int64 updated_at = 6;  // timestamp
+}
+
+// 变更余额请求
+message ChangeBalanceRequest {
+  string transaction_id = 1;  // 唯一交易ID（幂等性保证）
+  int64 account_id = 2;
+  string user_id = 3;
+  string currency_code = 4;
+  TransactionType type = 5;
+  string amount = 6;  // Decimal as string
+  string description = 7;
+  map<string, string> metadata = 8;
+}
+
+// 变更余额响应
+message ChangeBalanceResponse {
+  bool success = 1;
+  string transaction_id = 2;
+  string event_id = 3;  // Outbox event ID
+  string error_message = 4;
+}
+
+// 交易类型
+enum TransactionType {
+  DEPOSIT = 0;    // 充值
+  WITHDRAW = 1;   // 提现
+  FREEZE = 2;     // 冻结
+  UNFREEZE = 3;   // 解冻
+  TRANSFER = 4;   // 转账
+}
+
+// 健康检查请求
+message HealthCheckRequest {
+}
+
+// 健康检查响应
+message HealthCheckResponse {
+  bool healthy = 1;
+  string status = 2;
+  int64 timestamp = 3;
+}

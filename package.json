@@ -1,0 +1,62 @@
+{
+  "name": "hi-poc",
+  "version": "1.0.0",
+  "description": "High-throughput balance system PoC using Node.js + MySQL + Redis + Kafka",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc && npm run copy:proto",
+    "copy:proto": "mkdir -p dist/api/proto && cp src/api/proto/*.proto dist/api/proto/",
+    "start": "node dist/index.js",
+    "start:pm2": "pm2 start ecosystem.config.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:seed": "tsx src/db/seed.ts",
+    "db:check": "./scripts/check-db.sh",
+    "setup": "./scripts/setup.sh",
+    "db:init": "./scripts/init-db.sh"
+  },
+  "keywords": [
+    "balance-system",
+    "high-throughput",
+    "kafka",
+    "mysql",
+    "redis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.14",
+    "@grpc/proto-loader": "^0.7.10",
+    "@grpc/reflection": "^1.0.4",
+    "decimal.js": "^10.4.3",
+    "ioredis": "^5.3.2",
+    "kafkajs": "^2.2.4",
+    "mysql2": "^3.6.5",
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.6",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "jest": "^29.7.0",
+    "pm2": "^5.3.0",
+    "prettier": "^3.1.1",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
