@@ -6,10 +6,10 @@
 
 ### ✅ 正常运行的服务
 
-1. **gRPC API Server** ✅
+1. **REST API Server** ✅
    - 状态: 正常运行
    - Proto 文件: 已成功加载
-   - 端口: 50051
+   - 端口: 3000
 
 2. **Batch Consumer** ✅
    - 状态: 正常运行
@@ -39,7 +39,7 @@ Unknown file extension ".ts" for /Users/brianyu/Project/hi-poc/src/workers/redis
 
 **影响**: 
 - Redis 快照更新功能在开发环境不可用
-- 不影响核心功能（gRPC API、Consumer 都正常）
+- 不影响核心功能（REST API、Consumer 都正常）
 
 **解决方案**:
 1. **开发环境**: 先运行 `npm run build`，然后启动服务
@@ -76,7 +76,7 @@ Redis Updater Worker: Compiled JS file not found. Workers will not be initialize
 
 | 服务 | 状态 | 健康度 | 说明 |
 |------|------|--------|------|
-| gRPC API | ✅ | 100% | 正常运行 |
+| REST API | ✅ | 100% | 正常运行 |
 | Consumer | ✅ | 100% | 正常运行 |
 | Leader Election | ✅ | 100% | 正常运行 |
 | Metrics | ✅ | 100% | 正常运行 |

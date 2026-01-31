@@ -62,7 +62,7 @@
 
 ### 3. API 层
 
-#### ✅ gRPC API Server
+#### ✅ REST API Server
 - **文件**: `src/api/grpc/server.ts`
 - **Proto**: `src/api/proto/balance.proto`
 - **功能**:
@@ -163,7 +163,7 @@
 
 - **总文件数**: 19 个 TypeScript 文件
 - **核心服务**: 9 个
-- **API 服务**: 1 个（gRPC）
+- **API 服务**: 1 个（REST）
 - **Worker**: 1 个
 - **工具函数**: 5 个
 - **基础设施**: 3 个
@@ -223,7 +223,7 @@ npm run start:pm2
 
 ## 📡 服务端点
 
-- **gRPC API**: `0.0.0.0:50051`
+- **REST API**: `0.0.0.0:3000`
 - **Prometheus Metrics**: `http://localhost:9091/metrics`
 - **Grafana**: `http://localhost:3000`
 - **Prometheus**: `http://localhost:9090`
@@ -271,7 +271,7 @@ npm run start:pm2
    - 编写压测脚本
 
 2. **文档**
-   - API 文档（gRPC）
+   - API 文档（REST）
    - 部署文档
    - 运维手册
 

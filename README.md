@@ -154,7 +154,7 @@ hi-poc/
 
 ```env
 NODE_ENV=development
-PORT=50051
+PORT=3000
 
 # MySQL
 MYSQL_HOST=localhost

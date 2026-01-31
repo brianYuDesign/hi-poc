@@ -34,7 +34,7 @@
 hi-poc/
 ├── src/
 │   ├── api/              # API 服务 ✅
-│   │   ├── grpc/         # gRPC Server ✅
+│   │   ├── grpc/         # REST Server ✅
 │   │   └── proto/        # Proto 定义 ✅
 │   ├── consumer/         # Kafka Consumer ✅
 │   ├── services/         # 业务服务 ✅
@@ -172,7 +172,7 @@ hi-poc/
 - 动态批次处理
 - 消息去重
 
-✅ **src/api/grpc/server.ts** - gRPC API Server
+✅ **src/api/grpc/server.ts** - REST API Server
 - 余额查询 API
 - 余额变更 API
 - 健康检查 API
@@ -225,7 +225,7 @@ hi-poc/
 2. ✅ **Balance Service** (`src/services/balance.ts`)
 3. ✅ **MySQL Batch Writer** (`src/services/mysql-writer.ts`)
 4. ✅ **Batch Consumer** (`src/consumer/batch-consumer.ts`)
-5. ✅ **gRPC API Server** (`src/api/grpc/server.ts`)
+5. ✅ **REST API Server** (`src/api/grpc/server.ts`)
 6. ✅ **Redis Updater Worker** (`src/workers/redis-updater.ts`)
 7. ✅ **Leader Election Service** (`src/services/leader-election.ts`)
 8. ✅ **Prometheus 监控** (`src/utils/metrics.ts`)

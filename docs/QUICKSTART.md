@@ -67,7 +67,7 @@ cp .env.example .env  # 如果存在
 
 ```env
 NODE_ENV=development
-PORT=50051
+PORT=3000
 
 # MySQL
 MYSQL_HOST=localhost
@@ -119,8 +119,8 @@ pm2 logs
 ### 1. 检查服务健康
 
 ```bash
-# gRPC 健康检查（需要指定 proto 文件）
-grpcurl -proto src/api/proto/balance.proto -plaintext localhost:50051 balance.BalanceService/HealthCheck
+# REST 健康检查（需要指定 proto 文件）
+curl -proto src/api/proto/balance.proto -plaintext localhost:3000 balance.BalanceService/HealthCheck
 
 # Prometheus 指标
 curl http://localhost:9091/metrics

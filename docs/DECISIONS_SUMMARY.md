@@ -6,7 +6,7 @@
 
 | # | 议题 | 决策 | 日期 | 状态 |
 |---|------|------|------|------|
-| 1 | API 协议 | 混合方案（内部 gRPC + 对外 REST） | 2024-01-XX | ✅ |
+| 1 | API 协议 | 混合方案（内部 REST + 对外 REST） | 2024-01-XX | ✅ |
 | 2 | 监控方案 | Prometheus + Grafana | 2024-01-XX | ✅ |
 | 3 | 日志方案 | Loki + Grafana | 2024-01-XX | ✅ |
 | 4 | 部署方案 | Docker Compose + PM2 | 2024-01-XX | ✅ |
@@ -20,19 +20,19 @@
 
 ### 1. API 协议选择
 
-**决策**: 混合方案（内部 gRPC + 对外 REST）
+**决策**: 混合方案（内部 REST + 对外 REST）
 
 **理由**:
-- 内部服务间通信使用 gRPC，获得最佳性能
+- 内部服务间通信使用 REST，获得最佳性能
 - 对外 API 使用 REST，保证兼容性
-- 可以分阶段实施（先 gRPC，后 REST）
+- 可以分阶段实施（先 REST，后 REST）
 
 **实施**:
-- Phase 1: 实现 gRPC API（内部服务）
+- Phase 1: 实现 REST API（内部服务）
 - Phase 2: 实现 REST API（对外服务）
 
 **配置文件**:
-- `src/api/grpc/` - gRPC 服务
+- `src/api/grpc/` - REST 服务
 - `src/api/rest/` - REST API（待实现）
 
 ---

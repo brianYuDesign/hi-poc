@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const configSchema = z.object({
   nodeEnv: z.enum(['development', 'production', 'test']).default('development'),
-  port: z.number().default(50051),
+  port: z.number().default(3000),
   
   // MySQL 配置
   mysql: z.object({
@@ -84,7 +84,7 @@ export type Config = z.infer<typeof configSchema>;
 function loadConfig(): Config {
   const rawConfig = {
     nodeEnv: process.env.NODE_ENV || 'development',
-    port: parseInt(process.env.PORT || '50051', 10),
+    port: parseInt(process.env.PORT || '3000', 10),
     
     mysql: {
       host: process.env.MYSQL_HOST || 'localhost',

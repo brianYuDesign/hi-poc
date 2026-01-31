@@ -52,12 +52,12 @@ if (config.monitoring.enableMetrics) {
   logger.info('Prometheus metrics server started');
 }
 
-// 启动 gRPC API Server
+// 启动 REST API Server
 if (process.env.START_API !== 'false') {
-  const { getGRPCServer } = require('./api/grpc/server');
-  const grpcServer = getGRPCServer();
-  grpcServer.start();
-  logger.info('gRPC API Server started');
+  const { getRESTServer } = require('./api/rest/server');
+  const restServer = getRESTServer();
+  restServer.start();
+  logger.info('REST API Server started');
 }
 
 // 启动 Consumer

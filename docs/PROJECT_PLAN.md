@@ -45,7 +45,7 @@
 - [x] In-Memory Cache (Map 实现)
 - [x] MySQL Writer (批量 INSERT)
 - [x] Redis Updater (Worker Threads)
-- [x] gRPC API Server
+- [x] REST API Server
 
 #### 1.4 基础功能
 - [x] 余额更新 (加钱/扣钱)
@@ -113,7 +113,7 @@
 
 #### 3.4 安全性
 - [x] HMAC-SHA256 验证
-- [ ] gRPC 认证
+- [ ] REST 认证
 - [ ] 权限控制
 - [ ] 请求限流
 
@@ -183,10 +183,10 @@
 ┌─────────────┐
 │   Client    │
 └──────┬──────┘
-       │ gRPC
+       │ REST
        ▼
 ┌─────────────────────────────────┐
-│      API Gateway (gRPC)         │
+│      API Gateway (REST)         │
 │  - HMAC 验证                    │
 │  - 请求路由                     │
 └──────┬──────────────────────────┘
@@ -254,7 +254,7 @@
   - LWW 机制
   - Lua Script 原子操作
 
-#### 3.2.5 gRPC API
+#### 3.2.5 REST API
 - **职责**: 对外服务接口
 - **特性**:
   - HMAC 验证

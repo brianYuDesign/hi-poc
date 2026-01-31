@@ -56,10 +56,10 @@
 ┌─────────────┐
 │   Client    │
 └──────┬──────┘
-       │ gRPC
+       │ HTTP/REST
        ▼
 ┌─────────────────┐
-│  gRPC API Server│
+│  REST API Server│
 └──────┬──────────┘
        │
        ▼
@@ -105,7 +105,7 @@
 ### 数据流
 
 #### 写入流程
-1. **Client** 发送余额变更请求到 **gRPC API**
+1. **Client** 发送余额变更请求到 **REST API**
 2. **Outbox Service** 写入数据库（保证幂等性）
 3. **Outbox Service** 发送消息到 **Kafka**
 4. **Batch Consumer** 消费消息
@@ -115,7 +115,7 @@
 
 #### 查询流程
 1. **Client** 查询余额
-2. **gRPC API** 优先查询 **In-Memory Cache**
+2. **REST API** 优先查询 **In-Memory Cache**
 3. 缓存未命中时查询 **MySQL**
 4. 返回结果
 
@@ -227,7 +227,7 @@ npm start
 [INFO] Balance System starting...
 [INFO] Environment: development
 [INFO] Prometheus metrics server started
-[INFO] gRPC API Server started
+[INFO] REST API Server started
 [INFO] Consumer started as leader
 [INFO] Redis Updater Worker started
 [INFO] Balance System started successfully
@@ -258,7 +258,7 @@ npm start
 
 | 服务 | 端口 | 说明 |
 |------|------|------|
-| gRPC API | 50051 | 余额查询和变更 API |
+| REST API | 3000 | 余额查询和变更 API |
 | Prometheus Metrics | 9091 | 应用指标端点 |
 
 ### 环境变量
@@ -296,21 +296,29 @@ docker-compose ps
 - **Grafana**: http://localhost:3000 (admin/admin)
 - **Metrics**: http://localhost:9091/metrics
 
-### 3. 测试 gRPC API
+### 3. 测试 REST API
 
-你需要使用 gRPC 客户端工具，例如：
+使用 curl 或任何 HTTP 客户端工具：
 
 ```bash
-# 安装 grpcurl（如果还没有）
-brew install grpcurl  # macOS
-# 或
-go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+# 测试健康检查
+curl http://localhost:3000/health
 
-# 测试健康检查（需要指定 proto 文件）
-grpcurl -proto src/api/proto/balance.proto -plaintext localhost:50051 balance.BalanceService/HealthCheck
+# 查询余额
+curl http://localhost:3000/api/v1/balance/1/USDT
 
-# 列出可用的服务方法
-grpcurl -proto src/api/proto/balance.proto -plaintext localhost:50051 list balance.BalanceService
+# 变更余额（充值）
+curl -X POST http://localhost:3000/api/v1/balance/change \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transaction_id": "tx_001",
+    "account_id": 1,
+    "user_id": "user_001",
+    "currency_code": "USDT",
+    "type": 0,
+    "amount": "100.00",
+    "description": "测试充值"
+  }'
 ```
 
 ### 4. 查看日志
@@ -367,25 +375,37 @@ INSERT INTO accounts (user_id, shard_id) VALUES ('test_user_2', 1);
 SELECT * FROM accounts;
 ```
 
-### 使用 gRPC 客户端测试
+### 使用 REST API 测试
 
 ```bash
-# 查询余额（需要先创建账户，需要指定 proto 文件）
-grpcurl -proto src/api/proto/balance.proto -plaintext -d '{
-  "account_id": 1,
-  "currency_code": "USDT"
-}' localhost:50051 balance.BalanceService/GetBalance
+# 查询余额（需要先创建账户）
+curl http://localhost:3000/api/v1/balance/1/USDT
 
 # 变更余额（充值）
-grpcurl -proto src/api/proto/balance.proto -plaintext -d '{
-  "transaction_id": "tx_001",
-  "account_id": 1,
-  "user_id": "test_user_1",
-  "currency_code": "USDT",
-  "type": "DEPOSIT",
-  "amount": "100.00",
-  "description": "测试充值"
-}' localhost:50051 balance.BalanceService/ChangeBalance
+curl -X POST http://localhost:3000/api/v1/balance/change \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transaction_id": "tx_001",
+    "account_id": 1,
+    "user_id": "test_user_1",
+    "currency_code": "USDT",
+    "type": 0,
+    "amount": "100.00",
+    "description": "测试充值"
+  }'
+
+# 变更余额（提现）
+curl -X POST http://localhost:3000/api/v1/balance/change \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transaction_id": "tx_002",
+    "account_id": 1,
+    "user_id": "test_user_1",
+    "currency_code": "USDT",
+    "type": 1,
+    "amount": "50.00",
+    "description": "测试提现"
+  }'
 ```
 
 ---
@@ -462,7 +482,7 @@ docker-compose exec -T kafka kafka-topics --create \
 1. **阅读架构文档**: [ARCHITECTURE.md](./ARCHITECTURE.md)
 2. **查看已完成功能**: [FEATURES_COMPLETED.md](./FEATURES_COMPLETED.md)
 3. **了解配置**: [../src/config/index.ts](../src/config/index.ts)
-4. **查看 API 定义**: [../src/api/proto/balance.proto](../src/api/proto/balance.proto)
+4. **查看 API 定义**: [../src/api/rest/server.ts](../src/api/rest/server.ts)
 5. **PM2 使用指南**: [PM2_GUIDE.md](./PM2_GUIDE.md)
 
 ---

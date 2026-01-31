@@ -75,9 +75,9 @@ pm2 list
 
 项目已配置 PM2 配置文件，包含以下应用：
 
-1. **balance-api** - gRPC API 服务
+1. **balance-api** - REST API 服务
    - 实例数: 1（fork 模式）
-   - 端口: 50051
+   - 端口: 3000
    - 自动重启: 是
    - 日志: `logs/api-out.log`, `logs/api-error.log`
    - 内存限制: 1G
